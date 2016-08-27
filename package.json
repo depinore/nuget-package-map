@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "Determines what nuget dependencies you have in a given folder structure.",
   "main": "index.js",
-  "scripts": {
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/depinore/nuget-package-map.git"
@@ -14,5 +13,8 @@
   "bugs": {
     "url": "https://github.com/depinore/nuget-package-map/issues"
   },
-  "homepage": "https://github.com/depinore/nuget-package-map#readme"
+  "homepage": "https://github.com/depinore/nuget-package-map#readme",
+  "dependencies": {
+    "xml2js": "^0.4.17"
+  }
 }

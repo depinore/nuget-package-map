@@ -1,0 +1,18 @@
+{
+  "name": "nuget-package-map",
+  "version": "1.0.0",
+  "description": "Determines what nuget dependencies you have in a given folder structure.",
+  "main": "index.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/depinore/nuget-package-map.git"
+  },
+  "author": "depinore",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/depinore/nuget-package-map/issues"
+  },
+  "homepage": "https://github.com/depinore/nuget-package-map#readme"
+}

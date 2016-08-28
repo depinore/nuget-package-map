@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 //lib
 import * as xml2js from 'xml2js';
 import * as bluebird from 'bluebird';
@@ -18,14 +20,6 @@ var inspectDirectory = (directory: string, currentIndex: number, allDirectories:
 var readConfig = (fileName: string) =>
   <PromiseLike<Project>>(bluebird.promisify<Project, string>(xml2js.parseString)(fs.readFileSync(fileName, 'utf8')))
 
-function main(rootDirectories: string[]) {
-  var allDirectoryProjects: Project[] = [];//each directory can have multiple projects; we are allowing for multiple root directories.
-
-  Promise.all(rootDirectories.map(inspectDirectory))
-    .then((responses: any) => {
-      output(packageFns.getPackageVersions(<Project[]>(_.flatten(responses))));
-    })
-};
 function output(o: Object) {
   console.log(JSON.stringify(o, null, '\t'));
 }
@@ -41,6 +35,15 @@ function parseArgs(): AppConfiguration {
     specificPackages: argFns.toArrayArg(process.argv[3] || '')
   }
 }
+
+export function main(rootDirectories: string[]) {
+  var allDirectoryProjects: Project[] = [];//each directory can have multiple projects; we are allowing for multiple root directories.
+
+  Promise.all(rootDirectories.map(inspectDirectory))
+    .then((responses: any) => {
+      output(packageFns.getPackageVersions(<Project[]>(_.flatten(responses))));
+    })
+};
 
 (function(config: AppConfiguration) {
   config.displayHelp ? help() : main(config.directories)

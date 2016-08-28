@@ -1,15 +1,16 @@
 {
   "name": "nuget-package-map",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Determines what nuget dependencies you have in a given folder structure.",
   "bin":{
-    "nuget-package-map": "node js/index.js"
+    "nuget-package-map": "js/index.js"
   },
   "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/depinore/nuget-package-map.git"
   },
+  "main": "js/index.js",
   "author": "depinore",
   "preferGlobal": true,
   "license": "ISC",

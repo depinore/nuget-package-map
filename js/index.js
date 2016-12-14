@@ -8,8 +8,13 @@ const _ = require('lodash');
 //fns
 const argFns = require('./fns/Arguments');
 const packageFns = require('./fns/Package');
-var inspectDirectory = (directory, currentIndex, allDirectories) => (Promise.all(glob.sync(`${directory}/**/packages.config`).map(readConfig))); //will complete when all packages.config files have been read in this directory.
-var readConfig = (fileName) => (bluebird.promisify(xml2js.parseString)(fs.readFileSync(fileName, 'utf8')));
+//will complete when all packages.config files have been read in this directory.
+function inspectDirectory(directory, currentIndex, allDirectories) {
+    return (Promise.all(glob.sync(`${directory}/**/packages.config`).map(readConfig)));
+}
+function readConfig(fileName) {
+    return (bluebird.promisify(xml2js.parseString)(fs.readFileSync(fileName, 'utf8')));
+}
 function output(o) {
     console.log(JSON.stringify(o, null, '\t'));
 }
@@ -24,15 +29,15 @@ function parseArgs() {
         specificPackages: argFns.toArrayArg(process.argv[3] || '')
     };
 }
-function main(rootDirectories) {
+function main(config) {
     var allDirectoryProjects = []; //each directory can have multiple projects; we are allowing for multiple root directories.
-    Promise.all(rootDirectories.map(inspectDirectory))
+    Promise.all(config.directories.map(inspectDirectory))
         .then((responses) => {
-        output(packageFns.getPackageVersions((_.flatten(responses))));
+        output(packageFns.getPackageVersions((_.flatten(responses)), config.specificPackages));
     });
 }
 exports.main = main;
 ;
 (function (config) {
-    config.displayHelp ? help() : main(config.directories);
+    config.displayHelp ? help() : main(config);
 })(parseArgs());

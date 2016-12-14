@@ -15,10 +15,14 @@ import { AppConfiguration } from './models/AppConfiguration';
 import * as argFns from './fns/Arguments';
 import * as packageFns from './fns/Package';
 
-var inspectDirectory = (directory: string, currentIndex: number, allDirectories: string[]) =>
-    (Promise.all(glob.sync(`${directory}/**/packages.config`).map(readConfig)))//will complete when all packages.config files have been read in this directory.
-var readConfig = (fileName: string) =>
-  <PromiseLike<Project>>(bluebird.promisify<Project, string>(xml2js.parseString)(fs.readFileSync(fileName, 'utf8')))
+//will complete when all packages.config files have been read in this directory.
+function inspectDirectory(directory: string, currentIndex: number, allDirectories: string[]) {
+  return (Promise.all(glob.sync(`${directory}/**/packages.config`).map(readConfig)))
+}
+
+function readConfig(fileName: string) {
+ return <PromiseLike<Project>>(bluebird.promisify<Project, string>(xml2js.parseString)(fs.readFileSync(fileName, 'utf8')))
+}
 
 function output(o: Object) {
   console.log(JSON.stringify(o, null, '\t'));
@@ -36,15 +40,15 @@ function parseArgs(): AppConfiguration {
   }
 }
 
-export function main(rootDirectories: string[]) {
+export function main(config: AppConfiguration) {
   var allDirectoryProjects: Project[] = [];//each directory can have multiple projects; we are allowing for multiple root directories.
 
-  Promise.all(rootDirectories.map(inspectDirectory))
+  Promise.all(config.directories.map(inspectDirectory))
     .then((responses: any) => {
-      output(packageFns.getPackageVersions(<Project[]>(_.flatten(responses))));
+      output(packageFns.getPackageVersions(<Project[]>(_.flatten(responses)), config.specificPackages));
     })
 };
 
 (function(config: AppConfiguration) {
-  config.displayHelp ? help() : main(config.directories)
+  config.displayHelp ? help() : main(config)
 })(parseArgs())

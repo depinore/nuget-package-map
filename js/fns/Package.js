@@ -1,5 +1,5 @@
 "use strict";
-const _ = require('lodash');
+const _ = require("lodash");
 //if specificPackages were specified, then ensure that the packages we're looking at appear in there.  Not case sensitive.
 const isWithinSpecificPackages = (specificPackages, p) => specificPackages && specificPackages.length
     ? specificPackages.map(s => s.toLowerCase()).indexOf(p.id.toLowerCase()) > -1 //case-insensitive match based on the package id. 

@@ -1,28 +1,42 @@
 "use strict";
+const events = require("events");
 //lib
 const xml2js = require("xml2js");
 const bluebird = require("bluebird");
 const fs = require("fs");
 const glob = require("glob");
 const _ = require("lodash");
+//const
+const appEvents = require("./constants/events");
 //fns
 const packageFns = require("./fns/Package");
 //will complete when all packages.config files have been read in this directory.
-function inspectDirectory(directory, currentIndex, allDirectories) {
-    return (Promise.all(glob.sync(`${directory}/**/packages.config`).map(readConfig)));
+function inspectDirectory(emitter, directory, currentIndex, allDirectories) {
+    var fileNames = glob.sync(`${directory}/**/packages.config`);
+    return (Promise.all(fileNames
+        .map(_.partial(readConfig, emitter))))
+        .then(result => {
+        emitter.emit(appEvents.readComplete);
+        return result;
+    });
 }
-function readConfig(fileName) {
-    return (bluebird.promisify(xml2js.parseString)(fs.readFileSync(fileName, 'utf8')));
+function readConfig(emitter, fileName, index, allfiles) {
+    return (bluebird.promisify(xml2js.parseString)(fs.readFileSync(fileName, 'utf8')))
+        .then(results => {
+        emitter.emit(appEvents.fileParse, fileName, index, allfiles.length);
+        return results;
+    });
 }
-function output(o) {
-    console.log(JSON.stringify(o, null, '\t'));
-}
+//spits out a promise and an event emitter, so that you can watch its progress
+//listening for "formatting-complete" and watching the promise are equivalent.
 function main(config) {
     var allDirectoryProjects = []; //each directory can have multiple projects; we are allowing for multiple root directories.
-    Promise.all(config.directories.map(inspectDirectory))
-        .then((responses) => {
-        output(packageFns.getPackageVersions((_.flatten(responses)), config.specificPackages));
-    });
+    var emitter = new events.EventEmitter();
+    return {
+        promise: Promise.all(config.directories.map(_.partial(inspectDirectory, emitter)))
+            .then((responses) => packageFns.getPackageVersions((_.flatten(responses)), () => emitter.emit(appEvents.analysisComplete), config.specificPackages)),
+        emitter: emitter
+    };
 }
 exports.main = main;
 ;

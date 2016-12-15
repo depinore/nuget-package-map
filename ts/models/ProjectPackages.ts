@@ -11,3 +11,6 @@ export interface Package {
     version: string;
     targetFramework: string;
 }
+export interface VersionDependencyGraph {
+    [packageName: string]: string[]
+}

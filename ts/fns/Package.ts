@@ -7,11 +7,14 @@ const isWithinSpecificPackages = (specificPackages: string[], p: models.Package)
         ? specificPackages.map(s => s.toLowerCase()).indexOf(p.id.toLowerCase()) > -1  //case-insensitive match based on the package id. 
         : true;//if no specific packages were specified, then it just lets it pass.
 
-export function getPackageVersions(projects: models.Project[], specificPackages?: string[]) {
+export function getPackageVersions(projects: models.Project[], onAnalysisComplete: () => void, specificPackages?: string[]): models.VersionDependencyGraph {
     const packages = projects.map(project => (project.packages.package || []).map(p => p.$));
 
     var allPackages = _.flatten(packages)
                         .filter(_.partial(isWithinSpecificPackages, specificPackages))//filter out to just specific packages if we specified some.
+
+    onAnalysisComplete();
+
     return getVersionDictionary(groupPackagesById(allPackages))  //group the packages into an id -> version dictionary.
 }
 

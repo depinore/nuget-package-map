@@ -4,10 +4,11 @@ const _ = require("lodash");
 const isWithinSpecificPackages = (specificPackages, p) => specificPackages && specificPackages.length
     ? specificPackages.map(s => s.toLowerCase()).indexOf(p.id.toLowerCase()) > -1 //case-insensitive match based on the package id. 
     : true; //if no specific packages were specified, then it just lets it pass.
-function getPackageVersions(projects, specificPackages) {
+function getPackageVersions(projects, onAnalysisComplete, specificPackages) {
     const packages = projects.map(project => (project.packages.package || []).map(p => p.$));
     var allPackages = _.flatten(packages)
         .filter(_.partial(isWithinSpecificPackages, specificPackages)); //filter out to just specific packages if we specified some.
+    onAnalysisComplete();
     return getVersionDictionary(groupPackagesById(allPackages)); //group the packages into an id -> version dictionary.
 }
 exports.getPackageVersions = getPackageVersions;

@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 "use strict";
 const argFns = require("./fns/Arguments");
 const index_1 = require("./index");

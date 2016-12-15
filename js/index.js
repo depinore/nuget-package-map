@@ -1,5 +1,5 @@
-#!/usr/bin/env node
 "use strict";
+//lib
 const xml2js = require("xml2js");
 const bluebird = require("bluebird");
 const fs = require("fs");

@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 //lib
 import * as xml2js from 'xml2js';
 import * as bluebird from 'bluebird';

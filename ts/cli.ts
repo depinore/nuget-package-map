@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { AppConfiguration } from './models/AppConfiguration'
 import * as argFns from './fns/Arguments';
 import { main } from './index'

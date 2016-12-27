@@ -15,7 +15,7 @@ function parseArgs(): AppConfiguration {
   return {
     displayHelp: process.argv.length < 3,
     directories: argFns.toArrayArg(process.argv[2] || ''),
-    specificPackages: argFns.toArrayArg(process.argv[3] || ''),
+    specificPackages: process.argv[3] !== '--diag' ? argFns.toArrayArg(process.argv[3] || ''): null,
     diagnostic: process.argv.indexOf('--diag') > -1
   }
 }

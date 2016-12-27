@@ -3,11 +3,11 @@
         "module": "commonjs",
         "target": "es6",
         "noImplicitAny": false,
-        "sourceMap": false,
-        "outDir": "js"
+        "sourceMap": true,
+        "outDir": "dist"
     },
     "exclude": [
         "node_modules",
-        "js"
+        "dist"
     ]
 }

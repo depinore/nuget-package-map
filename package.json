@@ -1,16 +1,16 @@
 {
   "name": "nuget-package-map",
-  "version": "2.0.8",
+  "version": "2.0.9",
   "description": "Determines what nuget dependencies you have in a given folder structure.",
-  "bin":{
-    "nuget-package-map": "js/cli.js"
+  "bin": {
+    "nuget-package-map": "dist/cli.js"
   },
   "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/depinore/nuget-package-map.git"
   },
-  "main": "js/index.js",
+  "main": "dist/index.js",
   "author": "depinore",
   "preferGlobal": true,
   "license": "ISC",
@@ -24,5 +24,9 @@
     "glob-fs": "^0.1.6",
     "lodash": "^4.15.0",
     "xml2js": "^0.4.17"
-  }
+  },
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {}
 }

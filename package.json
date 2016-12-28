@@ -1,6 +1,6 @@
 {
   "name": "nuget-package-map",
-  "version": "2.0.9",
+  "version": "2.0.10",
   "description": "Determines what nuget dependencies you have in a given folder structure.",
   "bin": {
     "nuget-package-map": "dist/cli.js"

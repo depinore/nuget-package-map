@@ -5,7 +5,11 @@
   "bin": {
     "nuget-package-map": "dist/cli.js"
   },
-  "scripts": {},
+  "scripts": {
+    "precompile": "npm install",
+    "compile": "node node_modules/typescript/bin/tsc",
+    "watch": "npm run precompile && node node_modules/typescript/bin/tsc -w"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/depinore/nuget-package-map.git"
@@ -21,12 +25,13 @@
   "dependencies": {
     "bluebird": "^3.4.3",
     "glob": "^7.0.6",
-    "glob-fs": "^0.1.6",
     "lodash": "^4.15.0",
     "xml2js": "^0.4.17"
   },
   "files": [
     "dist"
   ],
-  "devDependencies": {}
+  "devDependencies": {
+    "typescript": "^2.1.4"
+  }
 }
